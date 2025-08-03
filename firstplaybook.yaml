@@ -1,0 +1,29 @@
+---
+ - name: it i smy first playbook
+   hosts: all
+   become: true
+   tasks:
+     - name: install jenkins
+       yum_repository:
+          name: jenkins
+          state: present
+          description: Official Jenkins Yum Repo
+          baseurl: http://pkg.jenkins.io/redhat
+          gpgkey: https://pkg.jenkins.io/redhat-stable/jenkins.io.key
+          gpgcheck: yes
+          enabled: yes
+     - name: install java
+       yum:
+           name: java-11-amazon-corretto
+           state: present
+     - name: install jenkins
+       yum:
+            name: jenkins
+            state: present
+     - name: daemon-reload to pick up config changes
+       systemd:
+          daemon_reload: yes
+     - name: start jenkins
+       service:
+            name: jenkins
+            state: started
