@@ -1,0 +1,9 @@
+---
+  - name: servicemodule playbook
+    hosts: all
+    become: true
+    tasks:
+      - name: serice start
+        service:
+          name: jenkins
+          state: started
