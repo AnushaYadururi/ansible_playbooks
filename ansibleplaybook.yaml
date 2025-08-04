@@ -1,0 +1,17 @@
+---
+ - name: it is the playbook for installing apache and running a webserver
+   hosts: all
+   become: true
+   tasks:
+     - name: install apache
+       yum:
+           name: httpd
+           state: present
+           update_cache: yes
+     - name: copy file with owner and permissions
+       ansible.builtin.copy:
+           src: index.html
+           dest: /var/www/html
+           owner: root
+           group: root
+           mode: '0644'
