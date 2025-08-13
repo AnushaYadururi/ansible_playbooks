@@ -1,0 +1,24 @@
+---
+- name: Patch Linux systems
+  hosts: all
+  become: yes
+  tasks:
+    - name: Update apt packages
+      apt:
+        upgrade: dist
+        update_cache: yes
+      when: ansible_os_family == "Debian"
+
+    - name: Update yum package
+      yum:
+        name: "*"
+        state: latest
+      when: ansible_os_family == "RedHat"
+
+    - name: Reboot if required
+      reboot:
+        msg: "Rebooting after patching..."
+        connect_timeout: 5
+        reboot_timeout: 600
+        test_command: whoami
+
